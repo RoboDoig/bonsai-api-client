@@ -7,9 +7,12 @@
     <!--<ContentView.BindingContext>
         <view:GraphViewControl></view:GraphViewControl>
     </ContentView.BindingContext>-->
+    <ContentView.Resources>
+        <view:GraphViewControlCanvas x:Key="drawable"/>
+    </ContentView.Resources>
     
     <VerticalStackLayout>
-        <GraphicsView x:Name="graphViewControl" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="500" Drawable="{Binding GraphViewControlCanvas}">
+        <GraphicsView x:Name="graphViewControl" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="500" Drawable="{StaticResource drawable}">
             
         </GraphicsView>
     </VerticalStackLayout>
