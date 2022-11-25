@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:bonsai_api_client.ViewModels"
+             xmlns:view="clr-namespace:bonsai_api_client.Views"
              x:Class="bonsai_api_client.MainPage">
 
     <ContentPage.BindingContext>
@@ -13,6 +14,10 @@
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
+
+            <view:GraphViewControl>
+                
+            </view:GraphViewControl>
 
             <Image
                 Source="dotnet_bot.png"
