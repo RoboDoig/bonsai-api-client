@@ -33,6 +33,8 @@
                 FontSize="18"
                 HorizontalOptions="Center" />
 
+            <Button Text="Start" Command="{Binding StartWorkflowCommand}"></Button>
+
         </VerticalStackLayout>
     </ScrollView>
 
