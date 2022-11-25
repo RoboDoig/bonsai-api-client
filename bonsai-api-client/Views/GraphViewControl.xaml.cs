@@ -14,6 +14,8 @@ public partial class GraphViewControl : ContentView, IGraphView
         InitializeComponent();
 
         WorkflowEditor = new WorkflowEditor(ServiceProvider.Current, this);
+        WorkflowEditor.Workflow = new ExpressionBuilderGraph();
+
         GraphViewControlCanvas = new GraphViewControlCanvas();
 
         // Add a test node
