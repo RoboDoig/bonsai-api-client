@@ -25,7 +25,7 @@ public partial class GraphViewControl : ContentView, IGraphView
         GraphViewControlCanvas = (GraphViewControlCanvas)graphViewControl.Drawable;
     }
 
-    IEnumerable<GraphNodeGrouping> IGraphView.Nodes => new GraphNodeGrouping[0];
+    public IEnumerable<GraphNodeGrouping> IGraphView.Nodes => WorkflowEditor.Workflow.ConnectedComponentLayering();
 
     IEnumerable<GraphNode> IGraphView.SelectedNodes => new GraphNode[0];
 }
