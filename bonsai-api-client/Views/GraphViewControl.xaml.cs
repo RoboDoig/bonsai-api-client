@@ -7,7 +7,7 @@ namespace bonsai_api_client.Views;
 public partial class GraphViewControl : ContentView, IGraphView
 {
     WorkflowEditor WorkflowEditor;
-    public GraphViewControlCanvas GraphViewControlCanvas { get; set; }
+    GraphViewControlCanvas GraphViewControlCanvas { get; set; }
 
     public GraphViewControl()
     {
@@ -21,6 +21,8 @@ public partial class GraphViewControl : ContentView, IGraphView
 
         // Add a test node
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
+
+        GraphViewControlCanvas = (GraphViewControlCanvas)graphViewControl.Drawable;
     }
 
     IEnumerable<GraphNodeGrouping> IGraphView.Nodes => new GraphNodeGrouping[0];
