@@ -8,7 +8,7 @@ using Bonsai;
 
 namespace bonsai_api_client.Models.GraphModel
 {
-    class GraphNode
+    public class GraphNode
     {
         static readonly Range<int> EmptyRange = Bonsai.Range.Create(0, 0);
         //static readonly Brush DisabledBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.Black, Color.Transparent);

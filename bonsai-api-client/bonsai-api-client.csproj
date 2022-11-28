@@ -58,10 +58,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\GraphModel\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="Bonsai.Core" Version="2.7.0" />
 	  <PackageReference Include="Bonsai.Editor" Version="2.7.1" />
 	</ItemGroup>

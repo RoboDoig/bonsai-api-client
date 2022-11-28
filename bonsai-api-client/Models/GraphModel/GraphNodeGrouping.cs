@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace bonsai_api_client.Models.GraphModel
 {
-    class GraphNodeGrouping : Collection<GraphNode>, IGrouping<int, GraphNode>
+    public class GraphNodeGrouping : Collection<GraphNode>, IGrouping<int, GraphNode>
     {
         public GraphNodeGrouping(int layer)
         {

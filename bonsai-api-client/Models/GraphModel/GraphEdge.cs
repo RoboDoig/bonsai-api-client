@@ -3,7 +3,7 @@ using Bonsai.Expressions;
 
 namespace bonsai_api_client.Models.GraphModel
 {
-    class GraphEdge
+    public class GraphEdge
     {
         public GraphEdge(ITypeDescriptorContext context, ExpressionBuilderArgument label, GraphNode successor)
         {

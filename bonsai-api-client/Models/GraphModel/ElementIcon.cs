@@ -9,7 +9,7 @@ using System.Reflection;
 namespace bonsai_api_client.Models.GraphModel
 {
     [DebuggerDisplay("{Name}")]
-    class ElementIcon
+    public class ElementIcon
     {
         static readonly ElementIcon Source = new ElementIcon(ElementCategory.Source);
         static readonly ElementIcon Transform = new ElementIcon(ElementCategory.Transform);

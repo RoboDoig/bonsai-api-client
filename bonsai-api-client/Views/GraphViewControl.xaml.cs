@@ -1,5 +1,6 @@
 using Bonsai.Expressions;
 using bonsai_api_client.Models.GraphModel;
+using System.Collections.Generic;
 
 namespace bonsai_api_client.Views;
 
@@ -20,9 +21,11 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
     }
 
-    IEnumerable<GraphNodeGrouping> IGraphView.Nodes => WorkflowEditor.Workflow.ConnectedComponentLayering();
+    IEnumerable<GraphNodeGrouping> nodes;
+    public IEnumerable<GraphNodeGrouping> Nodes { get { return nodes; } }
 
-    IEnumerable<GraphNode> IGraphView.SelectedNodes => new GraphNode[0];
+    IEnumerable<GraphNode> selectedNodes;
+    IEnumerable<GraphNode> IGraphView.SelectedNodes { get { return selectedNodes; } }
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
