@@ -19,13 +19,12 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 
         // Add a test node
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
+
+        WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
     }
 
-    IEnumerable<GraphNodeGrouping> nodes;
-    public IEnumerable<GraphNodeGrouping> Nodes { get { return nodes; } }
-
-    IEnumerable<GraphNode> selectedNodes;
-    IEnumerable<GraphNode> IGraphView.SelectedNodes { get { return selectedNodes; } }
+    IEnumerable<GraphNodeGrouping> IGraphView.Nodes { get { return WorkflowEditor.Workflow.ConnectedComponentLayering(); } }
+    IEnumerable<GraphNode> IGraphView.SelectedNodes { get { return new GraphNode[0]; } }
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -33,5 +32,11 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         canvas.StrokeSize = 6;
         canvas.DrawLine(10, 10, 90, 100);
         canvas.DrawLine(20, 20, 100, 110);
+
+        var t = (IGraphView)this;
+        foreach (GraphNodeGrouping g in t.Nodes)
+        {
+            System.Diagnostics.Debug.WriteLine(g);
+        }
     }
 }
