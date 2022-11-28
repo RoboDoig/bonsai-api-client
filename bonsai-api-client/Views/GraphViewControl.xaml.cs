@@ -15,6 +15,7 @@ public partial class GraphViewControl : ContentView, IGraphView
 
         WorkflowEditor = new WorkflowEditor(ServiceProvider.Current, this);
         WorkflowEditor.Workflow = new ExpressionBuilderGraph();
+        WorkflowEditor.UpdateLayout.Subscribe(validateWorkflow => { System.Diagnostics.Debug.WriteLine("Update layout"); });
 
         GraphViewControlCanvas = new GraphViewControlCanvas();
 

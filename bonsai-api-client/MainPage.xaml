@@ -16,14 +16,8 @@
             VerticalOptions="Center">
 
             <view:GraphViewControl>
-                
-            </view:GraphViewControl>
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+            </view:GraphViewControl>
 
             <Label
                 Text="Hello, World!"
