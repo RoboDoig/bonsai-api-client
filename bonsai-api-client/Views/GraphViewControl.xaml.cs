@@ -4,10 +4,9 @@ using bonsai_api_client.Models.GraphModel;
 namespace bonsai_api_client.Views;
 
 // TODO - can this be replaced by a proper ViewModel?
-public partial class GraphViewControl : ContentView, IGraphView
+public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 {
     WorkflowEditor WorkflowEditor;
-    GraphViewControlCanvas GraphViewControlCanvas { get; set; }
 
     public GraphViewControl()
     {
@@ -17,21 +16,14 @@ public partial class GraphViewControl : ContentView, IGraphView
         WorkflowEditor.Workflow = new ExpressionBuilderGraph();
         WorkflowEditor.UpdateLayout.Subscribe(validateWorkflow => { System.Diagnostics.Debug.WriteLine("Update layout"); });
 
-        GraphViewControlCanvas = new GraphViewControlCanvas();
-
         // Add a test node
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
-
-        GraphViewControlCanvas = (GraphViewControlCanvas)graphViewControl.Drawable;
     }
 
-    public IEnumerable<GraphNodeGrouping> IGraphView.Nodes => WorkflowEditor.Workflow.ConnectedComponentLayering();
+    IEnumerable<GraphNodeGrouping> IGraphView.Nodes => WorkflowEditor.Workflow.ConnectedComponentLayering();
 
     IEnumerable<GraphNode> IGraphView.SelectedNodes => new GraphNode[0];
-}
 
-public class GraphViewControlCanvas : IDrawable
-{
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
         canvas.StrokeColor = Colors.Red;

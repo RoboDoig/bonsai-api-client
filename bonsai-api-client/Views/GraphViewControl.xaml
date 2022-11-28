@@ -2,17 +2,11 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:view="clr-namespace:bonsai_api_client.Views"
+             x:Name="this"
              x:Class="bonsai_api_client.Views.GraphViewControl">
 
-    <!--<ContentView.BindingContext>
-        <view:GraphViewControl></view:GraphViewControl>
-    </ContentView.BindingContext>-->
-    <ContentView.Resources>
-        <view:GraphViewControlCanvas x:Key="drawable"/>
-    </ContentView.Resources>
-    
     <VerticalStackLayout>
-        <GraphicsView x:Name="graphViewControl" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="500" Drawable="{StaticResource drawable}">
+        <GraphicsView x:Name="graphViewControl" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="500" Drawable="{x:Reference this}">
             
         </GraphicsView>
     </VerticalStackLayout>
