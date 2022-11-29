@@ -19,7 +19,7 @@
 
             </view:GraphViewControl>
 
-            <Label
+            <!--<Label
                 Text="Hello, World!"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
@@ -30,7 +30,7 @@
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center" />-->
 
             <Button Text="Start" Command="{Binding StartWorkflowCommand}"></Button>
 
