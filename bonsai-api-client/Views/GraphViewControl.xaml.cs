@@ -4,10 +4,37 @@ using System.Collections.Generic;
 
 namespace bonsai_api_client.Views;
 
-// TODO - can this be replaced by a proper ViewModel?
+// TODO - can we generalize the canvas drawing part of this? Have some IntereactiveCanvas ContentView? 
 public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 {
     WorkflowEditor WorkflowEditor;
+
+    public static readonly BindableProperty NodeSpacingProperty =
+        BindableProperty.Create("NodeSpacing", typeof(float), typeof(GraphViewControl), 120f);
+
+    public static readonly BindableProperty NodeSizeProperty =
+        BindableProperty.Create("NodeSize", typeof(float), typeof(GraphViewControl), 100f);
+
+    public static readonly BindableProperty NodeMarginProperty =
+        BindableProperty.Create("NodeMargin", typeof(float), typeof(GraphViewControl), 20f);
+
+    public float NodeSpacing
+    {
+        get => (float)GetValue(NodeSpacingProperty);
+        set => SetValue(NodeSpacingProperty, value);
+    }
+
+    public float NodeSize
+    {
+        get => (float)GetValue(NodeSizeProperty);
+        set => SetValue(NodeSizeProperty, value);
+    }
+
+    public float NodeMargin
+    {
+        get => (float)GetValue(NodeMarginProperty);
+        set => SetValue(NodeMarginProperty, value);
+    }
 
     public GraphViewControl()
     {
@@ -30,13 +57,17 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
     {
         canvas.StrokeColor = Colors.Red;
         canvas.StrokeSize = 6;
-        canvas.DrawLine(10, 10, 90, 100);
-        canvas.DrawLine(20, 20, 100, 110);
 
-        var t = (IGraphView)this;
-        foreach (GraphNodeGrouping g in t.Nodes)
+        var graphView = (IGraphView)this;
+        foreach (GraphNodeGrouping graphNodeGrouping in graphView.Nodes)
         {
-            System.Diagnostics.Debug.WriteLine(g);
+            foreach (GraphNode graphNode in graphNodeGrouping)
+            {
+                int layer = graphNode.Layer;
+                int layerIndex = graphNode.LayerIndex;
+
+                canvas.DrawRectangle(new Rect(NodeMargin + (layer * NodeSpacing), NodeMargin + (layerIndex * NodeSpacing), NodeSize, NodeSize));
+            }
         }
     }
 }

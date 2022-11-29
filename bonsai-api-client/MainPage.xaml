@@ -15,7 +15,7 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <view:GraphViewControl>
+            <view:GraphViewControl NodeSpacing="200" NodeSize="100">
 
             </view:GraphViewControl>
 
