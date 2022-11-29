@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:bonsai_api_client.ViewModels"
              xmlns:view="clr-namespace:bonsai_api_client.Views"
+             xmlns:model="clr-namespace:bonsai_api_client.Models"
              x:Class="bonsai_api_client.MainPage">
 
     <ContentPage.BindingContext>
@@ -15,9 +16,22 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <view:GraphViewControl NodeSpacing="200" NodeSize="100">
+            <!--<view:GraphViewControl NodeSpacing="200" NodeSize="100">
 
-            </view:GraphViewControl>
+            </view:GraphViewControl>-->
+
+            <view:InteractiveObjectCanvas>
+                <view:InteractiveObjectCanvas.Objects>
+                    <x:Array Type="{x:Type model:ICanvasObject}">
+                        <Label>
+                            
+                        </Label>
+                        <Label>
+                            
+                        </Label>
+                    </x:Array>
+                </view:InteractiveObjectCanvas.Objects>
+            </view:InteractiveObjectCanvas>
 
             <!--<Label
                 Text="Hello, World!"
