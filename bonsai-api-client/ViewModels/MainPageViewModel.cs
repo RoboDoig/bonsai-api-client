@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bonsai.Editor.GraphModel;
+using bonsai_api_client.Models;
 using bonsai_api_client.Models.GraphModel;
 
 namespace bonsai_api_client.ViewModels
 {
     public class MainPageViewModel
     {
+        public IEnumerable<CanvasObject> CanvasObjects { get; set; }
+
         public Command StartWorkflowCommand { get; private set; }
 
         public MainPageViewModel()

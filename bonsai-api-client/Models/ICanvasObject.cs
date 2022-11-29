@@ -8,5 +8,7 @@ namespace bonsai_api_client.Models
 {
     public interface ICanvasObject
     {
+        int Layer { get; }
+        int LayerIndex { get; }
     }
 }

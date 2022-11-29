@@ -20,17 +20,8 @@
 
             </view:GraphViewControl>-->
 
-            <view:InteractiveObjectCanvas>
-                <view:InteractiveObjectCanvas.Objects>
-                    <x:Array Type="{x:Type model:ICanvasObject}">
-                        <Label>
-                            
-                        </Label>
-                        <Label>
-                            
-                        </Label>
-                    </x:Array>
-                </view:InteractiveObjectCanvas.Objects>
+            <view:InteractiveObjectCanvas Objects="{Binding CanvasObjects}">
+
             </view:InteractiveObjectCanvas>
 
             <!--<Label

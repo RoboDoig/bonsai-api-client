@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bonsai_api_client.Models
 {
-    public class CanvasObject
+    public class CanvasObject : ICanvasObject
     {
     }
 }
