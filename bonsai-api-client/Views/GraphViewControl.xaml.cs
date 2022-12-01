@@ -1,6 +1,6 @@
 using Bonsai.Expressions;
+using bonsai_api_client.Models.Graphics;
 using bonsai_api_client.Models.GraphModel;
-using System.Collections.Generic;
 
 namespace bonsai_api_client.Views;
 
@@ -8,6 +8,25 @@ namespace bonsai_api_client.Views;
 public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 {
     WorkflowEditor WorkflowEditor;
+    Dictionary<GraphNode, DrawnTransform> TransformMapping
+    {
+        get
+        {
+            Dictionary<GraphNode, DrawnTransform> mapping = new Dictionary<GraphNode, DrawnTransform>();
+            var graphView = (IGraphView)this;
+            foreach (GraphNode node in graphView.Nodes.SelectMany(x => x))
+            {
+                mapping.Add(node, new DrawnRectangle(
+                        new PointF(NodeMargin + (node.Layer * NodeSpacing), NodeMargin + (node.LayerIndex * NodeSpacing)),
+                        NodeSize,
+                        NodeSize,
+                        Colors.Blue
+                    )
+                );
+            }
+            return mapping;
+        }
+    }
 
     public static readonly BindableProperty NodeSpacingProperty =
         BindableProperty.Create("NodeSpacing", typeof(float), typeof(GraphViewControl), 120f);
@@ -50,24 +69,19 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
     }
 
-    IEnumerable<GraphNodeGrouping> IGraphView.Nodes { get { return WorkflowEditor.Workflow.ConnectedComponentLayering(); } }
+    IEnumerable<GraphNodeGrouping> IGraphView.Nodes { 
+        get {
+            IEnumerable<GraphNodeGrouping> nodeGroupings = WorkflowEditor.Workflow.ConnectedComponentLayering();
+            return nodeGroupings; 
+        } 
+    }
     IEnumerable<GraphNode> IGraphView.SelectedNodes { get { return new GraphNode[0]; } }
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        canvas.StrokeColor = Colors.Red;
-        canvas.StrokeSize = 6;
-
-        var graphView = (IGraphView)this;
-        foreach (GraphNodeGrouping graphNodeGrouping in graphView.Nodes)
+        foreach (var mapping in TransformMapping)
         {
-            foreach (GraphNode graphNode in graphNodeGrouping)
-            {
-                int layer = graphNode.Layer;
-                int layerIndex = graphNode.LayerIndex;
-
-                canvas.DrawRectangle(new Rect(NodeMargin + (layer * NodeSpacing), NodeMargin + (layerIndex * NodeSpacing), NodeSize, NodeSize));
-            }
+            mapping.Value.Draw(canvas, dirtyRect);
         }
     }
 }
