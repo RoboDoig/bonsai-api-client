@@ -9,6 +9,7 @@ namespace bonsai_api_client.Models.Graphics
 {
     public abstract class DrawnTransform
     {
+        public object AssociatedObject;
         protected PointF OriginPoint;
         protected Color FillColor;
         protected PointF LastClickedPoint;
@@ -30,8 +31,9 @@ namespace bonsai_api_client.Models.Graphics
         protected float Width;
         protected float Height;
         public override PointF CenterOrigin => new PointF(OriginPoint.X + (Width / 2), OriginPoint.Y + (Height / 2));
-        public DrawnRectangle(PointF originPoint, float width, float height, Color fillColor)
+        public DrawnRectangle(object associatedObject, PointF originPoint, float width, float height, Color fillColor)
         {
+            AssociatedObject = associatedObject;
             OriginPoint = originPoint;
             Width = width;
             Height = height;

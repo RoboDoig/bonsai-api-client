@@ -1,6 +1,7 @@
 using Bonsai.Expressions;
 using bonsai_api_client.Models.Graphics;
 using bonsai_api_client.Models.GraphModel;
+using System.Collections.ObjectModel;
 
 namespace bonsai_api_client.Views;
 
@@ -8,10 +9,28 @@ namespace bonsai_api_client.Views;
 public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 {
     WorkflowEditor WorkflowEditor;
-    Dictionary<GraphNode, DrawnTransform> TransformMapping = new Dictionary<GraphNode, DrawnTransform>();
+    Dictionary<ExpressionBuilder, DrawnTransform> transformMapping = new Dictionary<ExpressionBuilder, DrawnTransform>();
+    IGraphView graphView;
 
-    GraphNode CurrentSelectedGraphNode;
-    GraphNode PreviousSelectedGraphNode;
+    Dictionary<ExpressionBuilder, DrawnTransform> TransformMapping
+    {
+        get
+        {
+            var nodes = GetAllNodes();
+            foreach (var node in nodes)
+            {
+                if (!transformMapping.ContainsKey(node.Value))
+                {
+                    transformMapping.Add(node.Value, new DrawnRectangle(node, new PointF(NodeMargin + (node.Layer * NodeSpacing), NodeMargin + (node.LayerIndex * NodeSpacing)), NodeSize, NodeSize, NodeDefaultColor));
+                }
+            }
+
+            return transformMapping;
+        }
+    }
+
+    ExpressionBuilder CurrentSelectedNode;
+    ExpressionBuilder PreviousSelectedNode;
 
     public static readonly BindableProperty NodeSpacingProperty =
         BindableProperty.Create("NodeSpacing", typeof(float), typeof(GraphViewControl), 120f);
@@ -65,6 +84,8 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         WorkflowEditor = new WorkflowEditor(ServiceProvider.Current, this);
         WorkflowEditor.Workflow = new ExpressionBuilderGraph();
 
+        graphView = (IGraphView)this;
+
         WorkflowEditor.UpdateLayout.Subscribe(validateWorkflow => { 
             System.Diagnostics.Debug.WriteLine("Update layout");
         });
@@ -72,29 +93,20 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         // Add a test node
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
         WorkflowEditor.InsertGraphNode("Bonsai.Reactive.Timer, Bonsai.Core, Version=2.7.0.0, Culture=neutral, PublicKeyToken=null", Bonsai.ElementCategory.Source, CreateGraphNodeType.Successor, false, false);
-
-        var nodes = GetAllNodes();
-
-        System.Diagnostics.Debug.WriteLine(NodeSize);
-
-        foreach(var node in nodes)
-        {
-            TransformMapping.Add(
-                node,
-                new DrawnRectangle(
-                    new PointF(NodeMargin + (node.Layer * NodeSpacing), NodeMargin + (node.LayerIndex * NodeSpacing)),
-                            NodeSize,
-                            NodeSize,
-                            NodeDefaultColor
-                    )
-                );
-        }
     }
 
-    IEnumerable<GraphNode> GetAllNodes()
+    List<GraphNode> GetAllNodes()
     {
-        var graphView = (IGraphView)this;
-        return graphView.Nodes.SelectMany(x => x);
+        // Check - GraphNodes are reinstantiated as new instances each time? Only ExpressionBuilder retains static reference.
+        List<GraphNode> allNodes = new List<GraphNode>();
+        foreach (GraphNodeGrouping group in graphView.Nodes)
+        {
+            foreach (GraphNode node in group)
+            {
+                allNodes.Add(node);
+            }
+        }
+        return allNodes;
     }
 
     IEnumerable<GraphNodeGrouping> IGraphView.Nodes { 
@@ -126,6 +138,9 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         {
             selectedTransform.SetColor(NodeSelectedColor);
         }
+
+        CurrentSelectedNode = TransformMapping.Where(x => x.Value == selectedTransform).FirstOrDefault().Key;
+        PreviousSelectedNode = CurrentSelectedNode;
 
         Redraw();
     }
