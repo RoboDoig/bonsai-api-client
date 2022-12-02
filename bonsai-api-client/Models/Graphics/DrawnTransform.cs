@@ -22,6 +22,7 @@ namespace bonsai_api_client.Models.Graphics
         public abstract void OnSelect(PointF clickPosition);
         public abstract void OnDeselect();
         public abstract void OnDrag(PointF dragePosition);
+        public abstract void SetColor(Color color);
     }
 
     public class DrawnRectangle : DrawnTransform
@@ -64,6 +65,11 @@ namespace bonsai_api_client.Models.Graphics
         public override void SetPosition(PointF point)
         {
             OriginPoint = point;
+        }
+
+        public override void SetColor(Color color)
+        {
+            FillColor = color;
         }
     }
 }

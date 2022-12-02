@@ -6,7 +6,12 @@
              x:Class="bonsai_api_client.Views.GraphViewControl">
 
     <VerticalStackLayout>
-        <GraphicsView x:Name="graphViewControl" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="500" Drawable="{x:Reference this}">
+        <GraphicsView x:Name="graphViewControl" 
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand" 
+                      HeightRequest="500" 
+                      Drawable="{x:Reference this}"
+                      StartInteraction="graphViewControl_StartInteraction">
             
         </GraphicsView>
     </VerticalStackLayout>

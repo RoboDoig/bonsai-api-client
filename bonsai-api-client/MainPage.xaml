@@ -15,7 +15,7 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <view:GraphViewControl x:Name="graphView" NodeSpacing="80" NodeSize="50">
+            <view:GraphViewControl x:Name="graphView" NodeSpacing="70" NodeSize="40">
 
             </view:GraphViewControl>
 
