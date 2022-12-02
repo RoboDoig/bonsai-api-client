@@ -17,12 +17,19 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
         get
         {
             var nodes = GetAllNodes();
+            transformMapping.Clear();
+            Color FillColor;
             foreach (var node in nodes)
             {
-                if (!transformMapping.ContainsKey(node.Value))
+                if (node.Value == CurrentSelectedNode)
                 {
-                    transformMapping.Add(node.Value, new DrawnRectangle(node, new PointF(NodeMargin + (node.Layer * NodeSpacing), NodeMargin + (node.LayerIndex * NodeSpacing)), NodeSize, NodeSize, NodeDefaultColor));
+                    FillColor = NodeSelectedColor;
                 }
+                else
+                {
+                    FillColor = NodeDefaultColor;
+                }
+                transformMapping.Add(node.Value, new DrawnRectangle(node, new PointF(NodeMargin + (node.Layer * NodeSpacing), NodeMargin + (node.LayerIndex * NodeSpacing)), NodeSize, NodeSize, FillColor));
             }
 
             return transformMapping;
@@ -30,7 +37,6 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
     }
 
     ExpressionBuilder CurrentSelectedNode;
-    ExpressionBuilder PreviousSelectedNode;
 
     public static readonly BindableProperty NodeSpacingProperty =
         BindableProperty.Create("NodeSpacing", typeof(float), typeof(GraphViewControl), 120f);
@@ -115,7 +121,7 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
             return nodeGroupings; 
         } 
     }
-    IEnumerable<GraphNode> IGraphView.SelectedNodes { get { return new GraphNode[0]; } }
+    IEnumerable<GraphNode> IGraphView.SelectedNodes => GetAllNodes().Where(x => x.Value == CurrentSelectedNode);
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -132,20 +138,16 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 
     private void graphViewControl_StartInteraction(object sender, TouchEventArgs e)
     {
-        if (PreviousSelectedNode != null)
-        {
-            TransformMapping[PreviousSelectedNode].SetColor(NodeDefaultColor);
-        }
-
         var point = e.Touches[0];
         var selectedTransform = TransformMapping.Where(x => x.Value.ContainsPoint(point)).FirstOrDefault().Value;
         if (selectedTransform != null)
         {
             selectedTransform.SetColor(NodeSelectedColor);
+            System.Diagnostics.Debug.WriteLine(selectedTransform);
         }
 
-        CurrentSelectedNode = TransformMapping.Where(x => x.Value == selectedTransform).FirstOrDefault().Key;
-        PreviousSelectedNode = CurrentSelectedNode;
+        CurrentSelectedNode = transformMapping.Where(x => x.Value == selectedTransform).FirstOrDefault().Key;
+        System.Diagnostics.Debug.WriteLine(CurrentSelectedNode);
 
         Redraw();
     }
