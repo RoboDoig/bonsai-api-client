@@ -132,6 +132,11 @@ public partial class GraphViewControl : ContentView, IGraphView, IDrawable
 
     private void graphViewControl_StartInteraction(object sender, TouchEventArgs e)
     {
+        if (PreviousSelectedNode != null)
+        {
+            TransformMapping[PreviousSelectedNode].SetColor(NodeDefaultColor);
+        }
+
         var point = e.Touches[0];
         var selectedTransform = TransformMapping.Where(x => x.Value.ContainsPoint(point)).FirstOrDefault().Value;
         if (selectedTransform != null)
